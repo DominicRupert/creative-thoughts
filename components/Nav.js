@@ -26,7 +26,7 @@ export default function Nav() {
               </button>
             </Link>
             <Link href="/dashboard">
-              <h1>Dashboard</h1>
+            <img src={user.photoURL} />
             </Link>
           </div>
         )}
