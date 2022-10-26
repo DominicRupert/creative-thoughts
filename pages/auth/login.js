@@ -8,7 +8,7 @@ import React from "react";
 
 export default function Login() {
   const route = useRouter();
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const googleProvider = new GoogleAuthProvider();
   const GoogleLogin = async () => {
     try {

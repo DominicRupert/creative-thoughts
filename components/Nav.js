@@ -2,6 +2,7 @@ import Link from "next/link.js";
 import { auth } from "../utils/firebase.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import React from "react";
+import Image from "next/image.js";
 
 export default function Nav() {
   const [user, loading, error] = useAuthState(auth);
@@ -21,12 +22,16 @@ export default function Nav() {
         {user && (
           <div className="flex items-center gap-6">
             <Link href="/post">
-              <button className="font-medium bg-cyan-500 text-white py-2 px-4 rounded-mg textx-sm">
+              <button className="font-medium bg-cyan-500 text-white py-2 px-4 rounded-lg textx-sm">
                 Post
               </button>
             </Link>
             <Link href="/dashboard">
-            <img src={user.photoURL} />
+              <img
+                className="w-12 rounded-full cursor-pointer"
+                // @ts-ignore
+                src={user.photoURL}
+              />
             </Link>
           </div>
         )}
