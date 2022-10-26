@@ -4,13 +4,20 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { toast } from "react-toastify";
 export default function Post() {
   //Form state
   const [post, setPost] = useState({ description: "" });
   const [user, loading] = useAuthState(auth);
+  const route = useRouter();
 
   const submitPost = async (e) => {
     e.preventDefault();
+    if (!post.description) {
+      toast.error("Please enter a description",);
+      return;
+    }
+
     const collectionRef = collection(db, "posts");
     await addDoc(collectionRef, {
       ...post,
@@ -19,6 +26,8 @@ export default function Post() {
       avatar: user.photoURL,
       username: user.displayName,
     });
+    setPost({ description: "" });
+    return route.push("/");
   };
 
   return (
