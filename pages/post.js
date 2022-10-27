@@ -14,7 +14,17 @@ export default function Post() {
   const submitPost = async (e) => {
     e.preventDefault();
     if (!post.description) {
-      toast.error("Please enter a description",);
+      toast.error("Please enter a description", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1500,
+      });
+      return;
+    }
+    if (post.description.length > 300) {
+      toast.error("Description too long", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 1500,
+      });
       return;
     }
 
