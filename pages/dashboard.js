@@ -3,7 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import React from "react";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
-import { collection, query } from "firebase/firestore";
+import { collection, query, where} from "firebase/firestore";
 
 export default function Dashboard() {
   const route = useRouter();
@@ -12,7 +12,7 @@ export default function Dashboard() {
     if (loading) return;
     if (!user) return route.push("/auth/login");
     const collectionRef = collection(db, "posts");
-    const q = query;
+    const q = query(collectionRef, where('user', '==', user.uid));
   };
   useEffect(() => {
     getData();
