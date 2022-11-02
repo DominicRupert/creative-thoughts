@@ -1,8 +1,9 @@
-import { auth } from "../utils/firebase";
+import { auth, db } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import React from "react";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
+import { collection, query } from "firebase/firestore";
 
 export default function Dashboard() {
   const route = useRouter();
@@ -10,6 +11,8 @@ export default function Dashboard() {
   const getData = async () => {
     if (loading) return;
     if (!user) return route.push("/auth/login");
+    const collectionRef = collection(db, "posts");
+    const q = query;
   };
   useEffect(() => {
     getData();
