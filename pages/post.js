@@ -10,7 +10,7 @@ export default function Post() {
   const [post, setPost] = useState({ description: "" });
   const [user, loading] = useAuthState(auth);
   const route = useRouter();
-  const updateData = route.query;
+  const routeData = route.query;
 
   const submitPost = async (e) => {
     e.preventDefault();
@@ -44,10 +44,13 @@ export default function Post() {
   const checkUser = async () => {
     if (loading) return;
     if (!user) return route.push("/auth/login");
-  }
+    if (routeData.id) {
+      setPost({ description: routeData });
+    }
+  };
 
   useEffect(() => {
-checkUser();
+    checkUser();
   }, [user, loading]);
 
   return (
