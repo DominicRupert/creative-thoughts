@@ -3,10 +3,18 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import React from "react";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import Message from "../components/Message";
 import { BsTrash2Fill } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
+import Link from "next/link.js";
 
 export default function Dashboard() {
   const route = useRouter();
@@ -24,8 +32,9 @@ export default function Dashboard() {
     return unsubscribe;
   };
   const deletePost = async (id) => {
-    const docRef
-  }
+    const docRef = doc(db, "posts", id);
+    await deleteDoc(docRef);
+  };
   useEffect(() => {
     getData();
   }, [user, loading, error]);
@@ -38,14 +47,19 @@ export default function Dashboard() {
           return (
             <Message {...post} key={post.id}>
               <div className="flex gap-4">
-                <button className="text-pink-600 flex items-center justify-center gap-2 py-2 text-sm">
+                <button
+                  onClick={() => deletePost(post.id)}
+                  className="text-pink-600 flex items-center justify-center gap-2 py-2 text-sm"
+                >
                   <BsTrash2Fill className="text-2xl" />
                   Delete
                 </button>
-                <button className="text-teal-600 flex items-center justify-center gap-2 py-2 text-sm">
-                  <AiFillEdit className="text-2xl" />
-                  Edit
-                </button>
+                <Link href={{ pathname: "/post", query: post }}>
+                  <button className="text-teal-600 flex items-center justify-center gap-2 py-2 text-sm">
+                    <AiFillEdit className="text-2xl" />
+                    Edit
+                  </button>
+                </Link>
               </div>
             </Message>
           );
