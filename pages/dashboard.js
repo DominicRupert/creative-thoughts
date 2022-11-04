@@ -5,8 +5,8 @@ import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import Message from "../components/Message";
-import {BsTrash2Fill} from "react-icons/bs";
-import {AiFillEdit} from "react-icons/ai";
+import { BsTrash2Fill } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
 
 export default function Dashboard() {
   const route = useRouter();
@@ -23,6 +23,9 @@ export default function Dashboard() {
     });
     return unsubscribe;
   };
+  const deletePost = async (id) => {
+    const docRef
+  }
   useEffect(() => {
     getData();
   }, [user, loading, error]);
@@ -32,19 +35,29 @@ export default function Dashboard() {
       <h1>Your posts</h1>
       <div>
         {posts.map((post) => {
-          return(
-
-          <Message {...post} key={post.id}>
-            <div>
-              <button><BsTrash2Fill/>Delete</button>
-              <button><AiFillEdit/>Edit</button>
-            </div>
-          </Message>
+          return (
+            <Message {...post} key={post.id}>
+              <div className="flex gap-4">
+                <button className="text-pink-600 flex items-center justify-center gap-2 py-2 text-sm">
+                  <BsTrash2Fill className="text-2xl" />
+                  Delete
+                </button>
+                <button className="text-teal-600 flex items-center justify-center gap-2 py-2 text-sm">
+                  <AiFillEdit className="text-2xl" />
+                  Edit
+                </button>
+              </div>
+            </Message>
           );
         })}
       </div>
       <div>posts</div>
-      <button onClick={() => auth.signOut()}>Sign Out</button>
+      <button
+        className="font-medium text-white bg-gray-800 py-2 my-6 px-4"
+        onClick={() => auth.signOut()}
+      >
+        Sign Out
+      </button>
     </div>
   );
 }
