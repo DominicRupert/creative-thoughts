@@ -3,16 +3,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import React from "react";
 import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
-import { collection, query, where} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Dashboard() {
   const route = useRouter();
   const [user, loading, error] = useAuthState(auth);
+  const [posts, setPosts] = useState([]);
   const getData = async () => {
     if (loading) return;
     if (!user) return route.push("/auth/login");
     const collectionRef = collection(db, "posts");
-    const q = query(collectionRef, where('user', '==', user.uid));
+    const q = query(collectionRef, where("user", "==", user.uid));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setPosts(snapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
+    });
+    return unsubscribe;
   };
   useEffect(() => {
     getData();
