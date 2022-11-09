@@ -40,6 +40,7 @@ export default function Post() {
     setPost({ description: "" });
     return route.push("/");
   };
+  //keeping github green
 
   const checkUser = async () => {
     if (loading) return;
