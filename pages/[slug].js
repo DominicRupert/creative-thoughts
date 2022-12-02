@@ -3,7 +3,7 @@ import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import { auth, db } from "../utils/firebase.js";
 import { toast } from "react-toastify";
-import { updateDoc } from "firebase/firestore";
+import { updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
 
 export default function Details() {
   const router = useRouter();
@@ -21,7 +21,14 @@ export default function Details() {
       return;
     }
     const docRef = doc(db, "posts", routeData.id);
-    await updateDoc(docRef)
+    await updateDoc(docRef, {
+      comments: arrayUnion({
+        message,
+        avatar: auth.currentUser.photoURL,
+        userName: auth.currentUser.displayName,
+        time: Timestamp.now(),
+      })
+    })
   };
   return (
     <div>
