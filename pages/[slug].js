@@ -3,7 +3,7 @@ import { useRouter } from "next/router.js";
 import { useEffect, useState } from "react";
 import { auth, db } from "../utils/firebase.js";
 import { toast } from "react-toastify";
-import { updateDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import { updateDoc, doc, arrayUnion, Timestamp } from "firebase/firestore";
 
 export default function Details() {
   const router = useRouter();
@@ -28,8 +28,14 @@ export default function Details() {
         userName: auth.currentUser.displayName,
         time: Timestamp.now(),
       })
-    })
+    });
+    setMessage("");
   };
+  const getComments = async () => {
+    const docRef = doc(db, "posts", routeData.id);
+    const docSnap = await getDoc(docRef);
+  
+  }
   return (
     <div>
       <Message {...routeData}></Message>
