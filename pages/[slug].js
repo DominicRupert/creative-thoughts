@@ -81,6 +81,7 @@ export default function Details() {
                 />
                 <h2>{message.userName}</h2>
               </div>
+              //
               <h2>{message.message}</h2>
             </div>
           ))}
