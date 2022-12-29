@@ -1,7 +1,6 @@
 import { auth, db } from "../utils/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import React from "react";
-import { useRouter } from "next/router.js";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
   collection,
@@ -11,19 +10,21 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import Message from "../components/Message";
+import Message from "../components/message";
 import { BsTrash2Fill } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
-import Link from "next/link.js";
+import Link from "next/link";
+import React from "react";
 
 export default function Dashboard() {
   const route = useRouter();
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [posts, setPosts] = useState([]);
+
   const getData = async () => {
     if (loading) return;
     if (!user) return route.push("/auth/login");
-    console.log("run");
+
     const collectionRef = collection(db, "posts");
     const q = query(collectionRef, where("user", "==", user.uid));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -31,13 +32,17 @@ export default function Dashboard() {
     });
     return unsubscribe;
   };
+
+  //Delete Post
   const deletePost = async (id) => {
     const docRef = doc(db, "posts", id);
     await deleteDoc(docRef);
   };
+
+  //Get users data
   useEffect(() => {
     getData();
-  }, [user, loading, error]);
+  }, [user, loading]);
 
   return (
     <div>
@@ -51,8 +56,7 @@ export default function Dashboard() {
                   onClick={() => deletePost(post.id)}
                   className="text-pink-600 flex items-center justify-center gap-2 py-2 text-sm"
                 >
-                  <BsTrash2Fill className="text-2xl" />
-                  Delete
+                  <BsTrash2Fill className="text-2xl" /> Delete
                 </button>
                 <Link href={{ pathname: "/post", query: post }}>
                   <button className="text-teal-600 flex items-center justify-center gap-2 py-2 text-sm">
@@ -65,12 +69,11 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <div>posts</div>
       <button
-        className="font-medium text-white bg-gray-800 py-2 my-6 px-4"
+        className="font-medium text-white bg-gray-800 py-2 px-4 my-6"
         onClick={() => auth.signOut()}
       >
-        Sign Out
+        Sign out
       </button>
     </div>
   );

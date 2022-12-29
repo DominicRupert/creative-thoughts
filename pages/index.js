@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Message from "../components/message";
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
 import { db } from "../utils/firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Link from "next/link";
+import React from "react";
 
 export default function Home() {
   //Create a state with all the posts
