@@ -19,12 +19,17 @@ export default function Details() {
   const routeData = router.query;
   const [message, setMessage] = useState("");
   const [allMessage, setAllMessages] = useState([]);
+
+  //Submit a message
   const submitMessage = async () => {
+    //Check if the user is logged
     if (!auth.currentUser) return router.push("/auth/login");
+
     if (!message) {
-      toast.error("Please enter a message", {
+      console.log(message);
+      toast.error("Don't leave an empty message 😅", {
         position: toast.POSITION.TOP_CENTER,
-        autoClose: 1000,
+        autoClose: 1500,
       });
       return;
     }
@@ -39,6 +44,8 @@ export default function Details() {
     });
     setMessage("");
   };
+
+  //Get Comments
   const getComments = async () => {
     const docRef = doc(db, "posts", routeData.id);
     const unsubscribe = onSnapshot(docRef, (snapshot) => {
@@ -46,6 +53,7 @@ export default function Details() {
     });
     return unsubscribe;
   };
+
   useEffect(() => {
     if (!router.isReady) return;
     getComments();
@@ -59,7 +67,7 @@ export default function Details() {
             onChange={(e) => setMessage(e.target.value)}
             type="text"
             value={message}
-            placeholder="Send a message 🔊"
+            placeholder="Send a message 😀"
             className="bg-gray-800 w-full p-2 text-white text-sm"
           />
           <button
@@ -81,7 +89,6 @@ export default function Details() {
                 />
                 <h2>{message.userName}</h2>
               </div>
-              //
               <h2>{message.message}</h2>
             </div>
           ))}
